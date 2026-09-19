@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+:root {
+  --bg-purple-1: #1c1930;
+  --text-purple-1: #1f1283;
+  --bg-purple-light: #f4f2ff;
+  --header-height: 80px;
+  --header-shadow-color: #00000040;
+  font-family: "Encode Sans Semi Expanded", sans-serif;
+}
