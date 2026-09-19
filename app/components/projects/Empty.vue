@@ -10,6 +10,21 @@
       Clique no botão abaixo para criar o primeiro e gerenciá-lo.
     </p>
 
-    <CommonsButton />
+    <CommonsButton
+      @click="onNewProject"
+      label="Novo projeto"
+      variant="primary"
+      :-icon="CirclePlus"
+    />
   </div>
 </template>
+
+<script setup lang="ts">
+import { CirclePlus } from "lucide-vue-next";
+
+const router = useRouter();
+
+const onNewProject = () => {
+  router.push("/create");
+};
+</script>
