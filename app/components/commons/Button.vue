@@ -1,13 +1,14 @@
 <template>
   <button
     :disabled="disabled"
+    :type="type"
     :style="{
       backgroundColor: bgColor,
       color: textColor,
       borderColor: borderColor,
     }"
     :class="[
-      'flex items-center gap-3 rounded-full p-3 border',
+      'flex items-center justify-center gap-3 rounded-full p-3 border',
       disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
     ]"
     @mousedown="isActive = true"
@@ -32,6 +33,7 @@ const emit = defineEmits<{
 const props = withDefaults(
   defineProps<{
     label: string;
+    type?: "button" | "submit" | "reset";
     variant?: ButtonVariant;
     Icon?: Component;
     disabled?: boolean;
@@ -39,6 +41,7 @@ const props = withDefaults(
   {
     variant: "primary",
     disabled: false,
+    type: "button",
   },
 );
 

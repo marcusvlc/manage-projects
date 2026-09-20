@@ -10,8 +10,8 @@ export default defineNuxtConfig({
   modules: ["@nuxtjs/google-fonts"],
   googleFonts: {
     families: {
-      "Encode Sans Expanded": [300, 400, 700],
-      "Encode Sans Semi Expanded": [300, 400, 700],
+      "Encode Sans Expanded": [300, 400, 500, 600, 700],
+      "Encode Sans Semi Expanded": [300, 400, 500, 600, 700],
     },
     display: "swap",
     download: true,
