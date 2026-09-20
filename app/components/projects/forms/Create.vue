@@ -82,19 +82,17 @@ type CreateProjectFields = Omit<StoredProject, "initDate" | "endDate"> & {
   endDate: Date | null;
 };
 
+const { buildEmptyProject } = useProjectUtils();
+
 const formSubmitted = ref(false);
 
-const createProjectFields = reactive<CreateProjectFields>({
-  name: "",
-  customer: "",
-  initDate: null,
-  endDate: null,
-  coverImage: "",
-});
+let createProjectFields = reactive<CreateProjectFields>(buildEmptyProject());
 
 type CreateFormFields = keyof typeof createProjectFields;
 
 const { minWords, required } = useFormValidations();
+
+const disableSubmit = computed(() => formSubmitted.value && formHasErrors());
 
 const availableValidations = (): Partial<
   Record<CreateFormFields, (value: unknown) => boolean>
@@ -136,7 +134,10 @@ const formHasErrors = () => {
   );
 };
 
-const disableSubmit = computed(() => formSubmitted.value && formHasErrors());
+const clearForm = () => {
+  formSubmitted.value = false;
+  createProjectFields = reactive(buildEmptyProject());
+};
 
 const onFormSubmit = () => {
   formSubmitted.value = true;
@@ -152,6 +153,8 @@ const onFormSubmit = () => {
     initDate,
     endDate,
   });
+
+  clearForm();
 };
 
 const emit = defineEmits<{
