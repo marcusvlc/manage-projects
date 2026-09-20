@@ -64,16 +64,27 @@
       </template>
     </CommonsFormField>
 
-    <CommonsButton class="w-full" label="Salvar projeto" type="submit" />
+    <CommonsButton
+      :disabled="disableSubmit"
+      class="w-full"
+      label="Salvar projeto"
+      type="submit"
+    />
   </form>
 </template>
 
 <script lang="ts" setup>
 import { CalendarArrowUp, CalendarArrowDown } from "lucide-vue-next";
+import type { StoredProject } from "~/types/projects/project-types";
+
+type CreateProjectFields = Omit<StoredProject, "initDate" | "endDate"> & {
+  initDate: Date | null;
+  endDate: Date | null;
+};
 
 const formSubmitted = ref(false);
 
-const createProjectFields = reactive({
+const createProjectFields = reactive<CreateProjectFields>({
   name: "",
   customer: "",
   initDate: null,
@@ -125,17 +136,25 @@ const formHasErrors = () => {
   );
 };
 
+const disableSubmit = computed(() => formSubmitted.value && formHasErrors());
+
 const onFormSubmit = () => {
   formSubmitted.value = true;
 
   if (formHasErrors()) return;
 
-  console.log("[FORM Subbmited]", createProjectFields);
+  const { initDate, endDate } = createProjectFields;
 
-  emit("submit", createProjectFields);
+  if (!initDate || !endDate) return;
+
+  emit("submit", {
+    ...createProjectFields,
+    initDate,
+    endDate,
+  });
 };
 
 const emit = defineEmits<{
-  submit: [formData: typeof createProjectFields];
+  submit: [formData: StoredProject];
 }>();
 </script>

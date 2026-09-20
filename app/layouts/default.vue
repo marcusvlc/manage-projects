@@ -2,7 +2,9 @@
   <div class="flex flex-col min-h-screen">
     <Header />
 
-    <div class="flex flex-1 flex-col bg-(--bg-purple-light)">
+    <div
+      class="flex flex-1 flex-col bg-(--bg-purple-light) pt-15 pb-15 pl-10 pr-10"
+    >
       <NuxtPage />
     </div>
   </div>

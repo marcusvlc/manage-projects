@@ -1,6 +1,6 @@
 <template>
   <div
-    class="text-center rounded mt-15 mb-15 ml-10 mr-10 flex-1 bg-white flex flex-col items-center justify-center gap-5"
+    class="text-center rounded flex-1 bg-white flex flex-col items-center justify-center gap-5"
   >
     <h2 class="text-2xl font-semibold text-(--text-purple-1)">
       Nenhum projeto
