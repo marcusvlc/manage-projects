@@ -68,6 +68,10 @@ import type { StoredProject } from "~/types/projects/project-types";
 import { CalendarCheck2, CalendarDays, Ellipsis, Star } from "lucide-vue-next";
 import coverImage from "~/assets/images/cover.png";
 
+const emit = defineEmits<{
+  onFavorite: [project: StoredProject];
+}>();
+
 const props = defineProps<{
   project: StoredProject;
 }>();
@@ -82,6 +86,6 @@ const starColor = computed(() =>
 );
 
 const onFavoriteProject = () => {
-  console.log("favorite");
+  emit("onFavorite", props.project);
 };
 </script>

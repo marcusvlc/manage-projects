@@ -11,13 +11,13 @@
 </template>
 
 <script lang="ts" setup>
-import type { StoredProject } from "~/types/projects/project-types";
+import type { ProjectPayload } from "~/types/projects/project-types";
 
 const { saveProject } = useProjectsApi();
 const { addProject } = useProjectsStore();
 const { $toast } = useNuxtApp();
 
-const onCreateProject = async (payload: StoredProject) => {
+const onCreateProject = async (payload: ProjectPayload) => {
   try {
     const project = await saveProject(payload);
     if (!project) {

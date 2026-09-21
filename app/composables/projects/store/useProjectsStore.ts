@@ -11,8 +11,21 @@ export const useProjectsStore = () => {
     projects.value = storedProjects;
   };
 
+  const toggleProjectFavorited = (projectId: string) => {
+    const project = projects.value.find((project) => project.id === projectId);
+
+    if (!project) {
+      throw new Error("ID não encontrado");
+    }
+
+    project.favorited = !project.favorited;
+
+    return project.favorited;
+  };
+
   return {
     projects,
+    toggleProjectFavorited,
     addProject,
     setProjects,
   };

@@ -18,17 +18,23 @@
         </template>
       </CommonsPageSubHeader>
 
-      <ProjectsList class="mt-4" :projects="projects" />
+      <ProjectsList
+        @on-favorite="handleFavoriteProject"
+        class="mt-4"
+        :projects="projects"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { CirclePlus } from "lucide-vue-next";
+import type { StoredProject } from "~/types/projects/project-types";
 
-const { getProjects } = useProjectsApi();
-const { projects, setProjects } = useProjectsStore();
+const { getProjects, updateProject } = useProjectsApi();
+const { projects, setProjects, toggleProjectFavorited } = useProjectsStore();
 const router = useRouter();
+const { $toast } = useNuxtApp();
 
 const isLoading = ref(true);
 
@@ -38,6 +44,20 @@ const { data, error } = useAsyncData("projects", () => getProjects(), {
 
 const goToCreatePage = () => {
   router.push("/create");
+};
+
+const handleFavoriteProject = async (project: StoredProject) => {
+  try {
+    const favorited = toggleProjectFavorited(project.id);
+    await updateProject(project);
+
+    const successMessage = favorited
+      ? "Projeto adicionado aos favoritos com sucesso"
+      : "Você removeu esse projeto dos favoritos";
+    $toast.success(successMessage);
+  } catch {
+    $toast.error("Ocorreu um erro ao favoritar esse projeto");
+  }
 };
 
 watch(

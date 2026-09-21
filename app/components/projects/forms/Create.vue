@@ -79,9 +79,9 @@
 
 <script lang="ts" setup>
 import { CalendarArrowUp, CalendarArrowDown } from "lucide-vue-next";
-import type { StoredProject } from "~/types/projects/project-types";
+import type { ProjectPayload } from "~/types/projects/project-types";
 
-type CreateProjectFields = Omit<StoredProject, "initDate" | "endDate"> & {
+type CreateProjectFields = Omit<ProjectPayload, "initDate" | "endDate"> & {
   initDate: string | null;
   endDate: string | null;
 };
@@ -163,6 +163,6 @@ const onFormSubmit = () => {
 };
 
 const emit = defineEmits<{
-  submit: [formData: StoredProject];
+  submit: [formData: ProjectPayload];
 }>();
 </script>
