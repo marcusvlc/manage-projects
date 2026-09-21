@@ -1,11 +1,16 @@
 import type { StoredProject } from "~/types/projects/project-types";
-
-type ProjectFilter = (projects: StoredProject[]) => StoredProject[];
+import { projectSorters, sortingOptions } from "~/utils/project-filters";
+import type { ProjectFilter, SortingOption } from "~/types/projects/filters";
 
 export const useProjectFilters = (projects: Ref<StoredProject[]> = ref([])) => {
   const onlyFavorites = useState<boolean>(
     "projects-filter-only-favorites",
     () => false,
+  );
+
+  const sortingBy = useState<SortingOption>(
+    "projects-sorting",
+    () => sortingOptions[0]!,
   );
 
   const filters = computed<ProjectFilter[]>(() => {
@@ -20,15 +25,19 @@ export const useProjectFilters = (projects: Ref<StoredProject[]> = ref([])) => {
     return enabledFilters;
   });
 
-  const filteredProjects = computed(() =>
-    filters.value.reduce(
+  const filteredProjects = computed(() => {
+    const filtered = filters.value.reduce(
       (projectsToFilter, filter) => filter(projectsToFilter),
       projects.value,
-    ),
-  );
+    );
+
+    return projectSorters[sortingBy.value.id](filtered);
+  });
 
   return {
     filteredProjects,
     onlyFavorites,
+    sortingBy,
+    sortingOptions,
   };
 };

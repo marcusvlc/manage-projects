@@ -10,7 +10,7 @@
         :description="`(${projects.length})`"
       >
         <template #actions>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-4">
             <ProjectsFilters />
 
             <CommonsButton
