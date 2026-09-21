@@ -18,7 +18,13 @@
           type="button"
           aria-label="Favoritar projeto"
         >
-          <Star :size="28" stroke="#ffffff" stroke-width="2" />
+          <Star
+            :size="28"
+            :fill="starColor"
+            stroke="#ffffff"
+            stroke-width="2"
+            @click="onFavoriteProject"
+          />
         </button>
 
         <button
@@ -71,4 +77,11 @@ const { humanizeDate } = useDateUtils();
 const project = props.project;
 
 const projectImage = computed(() => props.project.coverImage || coverImage);
+const starColor = computed(() =>
+  props.project.favorited ? "var(--bg-gold-1)" : "none",
+);
+
+const onFavoriteProject = () => {
+  console.log("favorite");
+};
 </script>

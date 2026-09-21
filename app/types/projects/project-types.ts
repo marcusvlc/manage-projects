@@ -4,4 +4,5 @@ export interface StoredProject {
   initDate: string;
   endDate: string;
   coverImage: string;
+  favorited?: boolean;
 }
