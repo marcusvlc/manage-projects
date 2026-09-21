@@ -14,6 +14,8 @@
       :key="project.id"
       :project="project"
       @on-favorite="emit('onFavorite', $event)"
+      @on-edit="emit('onEdit', $event)"
+      @on-remove="emit('onRemove', $event)"
     />
   </TransitionGroup>
 </template>
@@ -23,6 +25,8 @@ import type { StoredProject } from "~/types/projects/project-types";
 
 const emit = defineEmits<{
   onFavorite: [project: StoredProject];
+  onEdit: [project: StoredProject];
+  onRemove: [project: StoredProject];
 }>();
 
 defineProps<{

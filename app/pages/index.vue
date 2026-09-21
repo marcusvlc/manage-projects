@@ -31,6 +31,8 @@
       <ProjectsList
         v-else
         @on-favorite="handleFavoriteProject"
+        @on-edit="goToEditPage"
+        @on-remove="handleRemoveProject"
         :projects="filteredProjects"
       />
     </div>
@@ -56,6 +58,15 @@ const { data, error } = useAsyncData("projects", () => getProjects(), {
 const goToCreatePage = () => {
   router.push("/create");
 };
+
+const goToEditPage = (project: StoredProject) => {
+  router.push({
+    path: "/edit",
+    query: { projectId: project.id },
+  });
+};
+
+const handleRemoveProject = () => {};
 
 const handleFavoriteProject = async (project: StoredProject) => {
   try {

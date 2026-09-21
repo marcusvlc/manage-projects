@@ -5,7 +5,11 @@
     <div
       class="border border-(--gray-border-1) rounded flex items-center justify-center pt-6 pb-6"
     >
-      <ProjectsFormsCreate class="w-[50%]" @submit="onCreateProject" />
+      <ProjectsFormsCreate
+        class="w-[50%]"
+        @submit="onCreateProject"
+        clear-on-submit
+      />
     </div>
   </div>
 </template>

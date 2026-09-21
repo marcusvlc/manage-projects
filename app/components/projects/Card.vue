@@ -1,16 +1,18 @@
 <template>
   <article
-    class="flex h-107.5 w-full max-w-86.5 flex-col overflow-hidden rounded-[20px] border border-(--gray-border-1) bg-white shadow-sm"
+    class="flex h-107.5 w-full max-w-86.5 flex-col overflow-visible rounded-[20px] border border-(--gray-border-1) bg-white shadow-sm"
   >
     <div
-      class="relative aspect-3/2 shrink-0 overflow-hidden bg-(--bg-purple-1)"
+      class="relative aspect-3/2 shrink-0 rounded-t-[20px] bg-(--bg-purple-1)"
     >
-      <img
-        v-if="projectImage"
-        class="h-full w-full object-cover"
-        :src="projectImage"
-        :alt="`Capa do projeto ${project.name}`"
-      />
+      <div class="absolute inset-0 overflow-hidden rounded-t-[20px]">
+        <img
+          v-if="projectImage"
+          class="h-full w-full object-cover"
+          :src="projectImage"
+          :alt="`Capa do projeto ${project.name}`"
+        />
+      </div>
 
       <div class="absolute bottom-4 right-4 flex items-center gap-4">
         <button
@@ -27,13 +29,7 @@
           />
         </button>
 
-        <button
-          class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white text-(--text-purple-1) shadow-md"
-          type="button"
-          aria-label="Mais opções do projeto"
-        >
-          <Ellipsis :size="22" />
-        </button>
+        <CommonsDropdown :options="dropdownOptions" />
       </div>
     </div>
 
@@ -65,11 +61,19 @@
 
 <script lang="ts" setup>
 import type { StoredProject } from "~/types/projects/project-types";
-import { CalendarCheck2, CalendarDays, Ellipsis, Star } from "lucide-vue-next";
+import {
+  CalendarCheck2,
+  CalendarDays,
+  SquarePen,
+  Star,
+  Trash2,
+} from "lucide-vue-next";
 import coverImage from "~/assets/images/cover.png";
 
 const emit = defineEmits<{
   onFavorite: [project: StoredProject];
+  onEdit: [project: StoredProject];
+  onRemove: [project: StoredProject];
 }>();
 
 const props = defineProps<{
@@ -88,4 +92,19 @@ const starColor = computed(() =>
 const onFavoriteProject = () => {
   emit("onFavorite", props.project);
 };
+
+const dropdownOptions = [
+  {
+    id: "edit",
+    icon: SquarePen,
+    label: "Editar",
+    onClick: () => emit("onEdit", props.project),
+  },
+  {
+    id: "remove",
+    icon: Trash2,
+    label: "Remover",
+    onClick: () => emit("onRemove", props.project),
+  },
+];
 </script>

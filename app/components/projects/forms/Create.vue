@@ -79,7 +79,15 @@
 
 <script lang="ts" setup>
 import { CalendarArrowUp, CalendarArrowDown } from "lucide-vue-next";
-import type { ProjectPayload } from "~/types/projects/project-types";
+import type {
+  ProjectPayload,
+  StoredProject,
+} from "~/types/projects/project-types";
+
+const props = defineProps<{
+  initialProject?: StoredProject;
+  clearOnSubmit?: boolean;
+}>();
 
 type CreateProjectFields = Omit<ProjectPayload, "initDate" | "endDate"> & {
   initDate: string | null;
@@ -87,11 +95,13 @@ type CreateProjectFields = Omit<ProjectPayload, "initDate" | "endDate"> & {
 };
 
 const { minWords, required } = useFormValidations();
-const { buildEmptyProject } = useProjectUtils();
+const { getInitialProject, buildEmptyProject } = useProjectUtils();
 
 const formSubmitted = ref(false);
 const fileUploading = ref(false);
-const createProjectFields = reactive<CreateProjectFields>(buildEmptyProject());
+const createProjectFields = reactive<CreateProjectFields>(
+  getInitialProject(props.initialProject),
+);
 
 const disableSubmit = computed(
   () => (formSubmitted.value && formHasErrors()) || fileUploading.value,
@@ -159,7 +169,7 @@ const onFormSubmit = () => {
     endDate,
   });
 
-  clearForm();
+  props.clearOnSubmit && clearForm();
 };
 
 const emit = defineEmits<{
