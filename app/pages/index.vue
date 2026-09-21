@@ -9,19 +9,23 @@
         :description="`(${projects.length})`"
       >
         <template #actions>
-          <CommonsButton
-            class="w-45"
-            label="Novo projeto"
-            :-icon="CirclePlus"
-            @click="goToCreatePage"
-          />
+          <div class="flex items-center gap-2">
+            <ProjectsFilters />
+
+            <CommonsButton
+              class="w-45"
+              label="Novo projeto"
+              :-icon="CirclePlus"
+              @click="goToCreatePage"
+            />
+          </div>
         </template>
       </CommonsPageSubHeader>
 
       <ProjectsList
         @on-favorite="handleFavoriteProject"
         class="mt-4"
-        :projects="projects"
+        :projects="filteredProjects"
       />
     </div>
   </div>
@@ -33,6 +37,7 @@ import type { StoredProject } from "~/types/projects/project-types";
 
 const { getProjects, updateProject } = useProjectsApi();
 const { projects, setProjects, toggleProjectFavorited } = useProjectsStore();
+const { filteredProjects } = useProjectFilters(projects);
 const router = useRouter();
 const { $toast } = useNuxtApp();
 
