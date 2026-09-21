@@ -48,12 +48,12 @@
 
       <div class="flex items-center gap-4 text-md">
         <CalendarDays :size="28" stroke-width="1.8" />
-        <span>{{ humanizeDate(new Date(project.initDate)) }}</span>
+        <span>{{ humanizeDate(project.initDate) }}</span>
       </div>
 
       <div class="flex items-center gap-4 text-md">
         <CalendarCheck2 :size="28" stroke-width="1.8" />
-        <span>{{ humanizeDate(new Date(project.endDate)) }}</span>
+        <span>{{ humanizeDate(project.endDate) }}</span>
       </div>
     </div>
   </article>

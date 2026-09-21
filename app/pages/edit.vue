@@ -32,7 +32,10 @@ import { Ghost } from "lucide-vue-next";
 
 const route = useRoute();
 const project = ref<StoredProject | null>(null);
-const { getProjectById } = useProjectsStore();
+const { updateProject: updateStoredProject, getProjectById } =
+  useProjectsStore();
+const { updateProject } = useProjectsApi();
+const { $toast } = useNuxtApp();
 
 onBeforeMount(() => {
   const projectId = route.query.projectId;
@@ -46,7 +49,34 @@ onBeforeMount(() => {
   project.value = searchProject;
 });
 
-const handleProjectEdit = (payload: ProjectPayload) => {
-  console.log(payload);
+const handleProjectEdit = async (payload: ProjectPayload) => {
+  if (!project.value) {
+    $toast.error(
+      "Ocorreu um erro ao editar o projeto, tente novamente mais tarde.",
+    );
+    return;
+  }
+
+  try {
+    const updatedProject = await updateProject({
+      ...payload,
+      id: project.value.id,
+      favorited: project.value.favorited,
+    });
+
+    if (!updatedProject) {
+      $toast.error(
+        "Ocorreu um erro ao editar o projeto, tente novamente mais tarde.",
+      );
+      return;
+    }
+
+    updateStoredProject(updatedProject);
+    $toast.success("Projeto editado com sucesso!");
+  } catch {
+    $toast.error(
+      "Ocorreu um erro ao editar o projeto, tente novamente mais tarde.",
+    );
+  }
 };
 </script>

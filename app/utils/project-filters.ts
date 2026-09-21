@@ -1,5 +1,6 @@
 import { AvailableSorting, type SortingOption } from "~/types/projects/filters";
 import type { StoredProject } from "~/types/projects/project-types";
+import { parseDateOnly } from "~/utils/date-utils";
 
 export const sortingOptions: SortingOption[] = [
   {
@@ -26,13 +27,13 @@ export const projectSorters: Record<AvailableSorting, ProjectSorter> = {
   [AvailableSorting.MostRecentStarted]: (projects) =>
     [...projects].sort(
       (firstProject, secondProject) =>
-        new Date(secondProject.initDate).getTime() -
-        new Date(firstProject.initDate).getTime(),
+        parseDateOnly(secondProject.initDate).getTime() -
+        parseDateOnly(firstProject.initDate).getTime(),
     ),
   [AvailableSorting.MostRecentDeadline]: (projects) =>
     [...projects].sort(
       (firstProject, secondProject) =>
-        new Date(firstProject.endDate).getTime() -
-        new Date(secondProject.endDate).getTime(),
+        parseDateOnly(firstProject.endDate).getTime() -
+        parseDateOnly(secondProject.endDate).getTime(),
     ),
 };
