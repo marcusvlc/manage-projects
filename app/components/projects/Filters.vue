@@ -1,5 +1,9 @@
 <template>
   <div>
-    <CommonsRadioInput label="Apenas favoritos" />
+    <CommonsRadioInput v-model="onlyFavorites" label="Apenas favoritos" />
   </div>
 </template>
+
+<script setup lang="ts">
+const { onlyFavorites } = useProjectFilters();
+</script>

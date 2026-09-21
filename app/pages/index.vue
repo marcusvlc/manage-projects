@@ -3,9 +3,10 @@
     <ProjectsLoading v-if="isLoading" />
     <ProjectsEmpty v-else-if="!projects.length" />
 
-    <div v-else>
+    <div v-else class="flex min-h-0 flex-1 flex-col">
       <CommonsPageSubHeader
         title="Projetos"
+        class="mb-4"
         :description="`(${projects.length})`"
       >
         <template #actions>
@@ -22,9 +23,14 @@
         </template>
       </CommonsPageSubHeader>
 
+      <ProjectsFilteredEmpty
+        class="min-h-0 w-full flex-1"
+        v-if="projects.length && !filteredProjects.length"
+      />
+
       <ProjectsList
+        v-else
         @on-favorite="handleFavoriteProject"
-        class="mt-4"
         :projects="filteredProjects"
       />
     </div>
