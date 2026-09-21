@@ -1,7 +1,6 @@
 <template>
   <div class="flex flex-1 flex-col">
-    <ProjectsLoading v-if="isLoading" />
-    <ProjectsEmpty v-else-if="!projects.length" />
+    <ProjectsEmpty v-if="!projects.length" />
 
     <div v-else class="flex min-h-0 flex-1 flex-col">
       <CommonsPageSubHeader
@@ -43,17 +42,11 @@
 import { CirclePlus } from "lucide-vue-next";
 import type { StoredProject } from "~/types/projects/project-types";
 
-const { getProjects, updateProject } = useProjectsApi();
-const { projects, setProjects, toggleProjectFavorited } = useProjectsStore();
+const { updateProject } = useProjectsApi();
+const { projects, toggleProjectFavorited } = useProjectsStore();
 const { filteredProjects } = useProjectFilters(projects);
 const router = useRouter();
 const { $toast } = useNuxtApp();
-
-const isLoading = ref(true);
-
-const { data, error } = useAsyncData("projects", () => getProjects(), {
-  server: false,
-});
 
 const goToCreatePage = () => {
   router.push("/create");
@@ -81,22 +74,4 @@ const handleFavoriteProject = async (project: StoredProject) => {
     $toast.error("Ocorreu um erro ao favoritar esse projeto");
   }
 };
-
-watch(
-  [data, error],
-  ([storedProjects, loadError]) => {
-    if (storedProjects) {
-      setProjects(storedProjects);
-    }
-
-    if (loadError) {
-      console.error("Erro ao carregar projetos:", loadError);
-    }
-
-    if (storedProjects || loadError) {
-      isLoading.value = false;
-    }
-  },
-  { immediate: true },
-);
 </script>

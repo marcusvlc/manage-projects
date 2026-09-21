@@ -5,7 +5,12 @@
     <div
       class="flex flex-1 flex-col bg-(--bg-purple-light) pt-15 pb-15 pl-10 pr-10"
     >
-      <NuxtPage />
+      <ProjectsLoading v-if="isLoading" />
+      <NuxtPage v-else />
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const { isLoading } = useProjectsLoader();
+</script>
