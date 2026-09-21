@@ -1,7 +1,7 @@
 export interface StoredProject {
   name: string;
   customer: string;
-  initDate: Date;
-  endDate: Date;
+  initDate: string;
+  endDate: string;
   coverImage: string;
 }

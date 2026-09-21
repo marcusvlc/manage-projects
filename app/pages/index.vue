@@ -3,7 +3,16 @@
     <ProjectsLoading v-if="isLoading" />
     <ProjectsEmpty v-else-if="!projects.length" />
 
-    <div v-else>{{ projects }}</div>
+    <div v-else>
+      <CommonsPageSubHeader
+        title="Projetos"
+        :description="`(${projects.length})`"
+      >
+        <template #actions> TODO </template>
+      </CommonsPageSubHeader>
+
+      <ProjectsList class="mt-4" :projects="projects" />
+    </div>
   </div>
 </template>
 

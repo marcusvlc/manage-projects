@@ -9,7 +9,14 @@
         <ArrowLeftIcon class="text-(--text-purple-2)" :size="16" />
         <span class="text-sm text-(--text-purple-2)">Voltar</span>
       </div>
-      <h2 class="text-(--text-purple-1) font-semibold text-2xl">{{ title }}</h2>
+      <div class="flex gap-2 items-center">
+        <h2 class="text-(--text-purple-1) font-semibold text-2xl">
+          {{ title }}
+        </h2>
+        <span class="text-sm text-(--text-purple-2)" v-if="description">{{
+          description
+        }}</span>
+      </div>
     </div>
 
     <slot name="actions" />
@@ -21,6 +28,7 @@ import { ArrowLeftIcon } from "lucide-vue-next";
 
 defineProps<{
   title: string;
+  description?: string;
   showBackButton?: boolean;
 }>();
 
