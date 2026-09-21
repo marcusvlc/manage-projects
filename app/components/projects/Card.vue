@@ -18,7 +18,7 @@
           type="button"
           aria-label="Favoritar projeto"
         >
-          <Star :size="28" fill="#f9c62b" stroke="#ffffff" stroke-width="2" />
+          <Star :size="28" stroke="#ffffff" stroke-width="2" />
         </button>
 
         <button

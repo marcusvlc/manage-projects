@@ -14,7 +14,7 @@
         class="absolute cursor-pointer right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-white text-(--gray-base-1) shadow"
         type="button"
         aria-label="Remover imagem"
-        @click="removeFile"
+        @click="clearImage"
       >
         <Trash2 :size="16" />
       </button>
@@ -69,6 +69,8 @@ withDefaults(
 const emit = defineEmits<{
   uploaded: [base64: string];
   "uploaded:removed": [];
+  "upload:start": [];
+  "upload:end": [];
 }>();
 
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -111,6 +113,10 @@ const handleFileChange = async (event: Event) => {
   reader.readAsDataURL(file);
 };
 
+const clearImage = () => {
+  model.value = "";
+};
+
 const removeFile = () => {
   previewUrl.value = null;
   isLoading.value = false;
@@ -119,6 +125,17 @@ const removeFile = () => {
     fileInput.value.value = "";
   }
 
-  model.value = "";
+  emit("uploaded:removed");
 };
+
+watch(isLoading, (newValue) => {
+  newValue ? emit("upload:start") : emit("upload:end");
+});
+
+watch(model, (newModel) => {
+  if (!newModel) {
+    console.log("REMOVE FILE..");
+    removeFile();
+  }
+});
 </script>

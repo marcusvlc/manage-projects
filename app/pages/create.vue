@@ -15,19 +15,24 @@ import type { StoredProject } from "~/types/projects/project-types";
 
 const { saveProject } = useProjectsApi();
 const { addProject } = useProjectsStore();
+const { $toast } = useNuxtApp();
 
 const onCreateProject = async (payload: StoredProject) => {
   try {
     const project = await saveProject(payload);
     if (!project) {
-      console.error("Error on Save");
+      $toast.error(
+        "Ocorreu um erro ao criar o projeto, tente novamente mais tarde.",
+      );
       return;
     }
 
     addProject(project);
-    console.log("SAVE SUCCESSFULL");
+    $toast.success("Projeto criado com sucesso!");
   } catch {
-    console.error("Error on Save");
+    $toast.error(
+      "Ocorreu um erro ao criar o projeto, tente novamente mais tarde.",
+    );
   }
 };
 </script>

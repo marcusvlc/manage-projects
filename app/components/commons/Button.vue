@@ -8,7 +8,7 @@
       borderColor: borderColor,
     }"
     :class="[
-      'flex items-center justify-center gap-3 rounded-full p-3 border',
+      'flex items-center justify-center gap-3 rounded-full p-3 border h-10',
       disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
     ]"
     @mousedown="isActive = true"

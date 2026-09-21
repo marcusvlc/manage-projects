@@ -19,7 +19,7 @@
 import { computed, type Component } from "vue";
 import { Calendar } from "lucide-vue-next";
 
-const model = defineModel<Date | null>();
+const model = defineModel<string | null>();
 
 const props = defineProps<{
   error?: boolean;

@@ -8,7 +8,14 @@
         title="Projetos"
         :description="`(${projects.length})`"
       >
-        <template #actions> TODO </template>
+        <template #actions>
+          <CommonsButton
+            class="w-45"
+            label="Novo projeto"
+            :-icon="CirclePlus"
+            @click="goToCreatePage"
+          />
+        </template>
       </CommonsPageSubHeader>
 
       <ProjectsList class="mt-4" :projects="projects" />
@@ -17,13 +24,21 @@
 </template>
 
 <script lang="ts" setup>
+import { CirclePlus } from "lucide-vue-next";
+
 const { getProjects } = useProjectsApi();
 const { projects, setProjects } = useProjectsStore();
+const router = useRouter();
+
 const isLoading = ref(true);
 
 const { data, error } = useAsyncData("projects", () => getProjects(), {
   server: false,
 });
+
+const goToCreatePage = () => {
+  router.push("/create");
+};
 
 watch(
   [data, error],

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between flex-wrap space-y-2">
     <div class="flex flex-col gap-2">
       <div
         v-if="showBackButton"

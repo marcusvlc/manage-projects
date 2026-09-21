@@ -60,7 +60,11 @@
 
     <CommonsFormField class="w-full" label="Capa do projeto">
       <template #input>
-        <CommonsAttachementInput v-model="createProjectFields.coverImage" />
+        <CommonsAttachementInput
+          v-model="createProjectFields.coverImage"
+          @upload:start="fileUploading = true"
+          @upload:end="fileUploading = false"
+        />
       </template>
     </CommonsFormField>
 
@@ -78,21 +82,22 @@ import { CalendarArrowUp, CalendarArrowDown } from "lucide-vue-next";
 import type { StoredProject } from "~/types/projects/project-types";
 
 type CreateProjectFields = Omit<StoredProject, "initDate" | "endDate"> & {
-  initDate: Date | null;
-  endDate: Date | null;
+  initDate: string | null;
+  endDate: string | null;
 };
 
+const { minWords, required } = useFormValidations();
 const { buildEmptyProject } = useProjectUtils();
 
 const formSubmitted = ref(false);
+const fileUploading = ref(false);
+const createProjectFields = reactive<CreateProjectFields>(buildEmptyProject());
 
-let createProjectFields = reactive<CreateProjectFields>(buildEmptyProject());
+const disableSubmit = computed(
+  () => (formSubmitted.value && formHasErrors()) || fileUploading.value,
+);
 
 type CreateFormFields = keyof typeof createProjectFields;
-
-const { minWords, required } = useFormValidations();
-
-const disableSubmit = computed(() => formSubmitted.value && formHasErrors());
 
 const availableValidations = (): Partial<
   Record<CreateFormFields, (value: unknown) => boolean>
@@ -136,7 +141,7 @@ const formHasErrors = () => {
 
 const clearForm = () => {
   formSubmitted.value = false;
-  createProjectFields = reactive(buildEmptyProject());
+  Object.assign(createProjectFields, buildEmptyProject());
 };
 
 const onFormSubmit = () => {
