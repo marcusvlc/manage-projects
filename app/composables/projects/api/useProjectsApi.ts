@@ -49,6 +49,25 @@ export const useProjectsApi = () => {
     }
   };
 
+  const removeProject = async (projectId: string) => {
+    try {
+      const currentProjects = await getProjects();
+      const projectIndex = currentProjects.findIndex(
+        (project) => project.id === projectId,
+      );
+
+      if (projectIndex === -1) {
+        throw new Error("Projeto não encontrado");
+      }
+
+      currentProjects.splice(projectIndex, 1);
+      await localforage.setItem(INDEXED_DB_PROJECTS_KEY, currentProjects);
+    } catch (erro) {
+      console.error("Erro ao remover:", erro);
+      throw erro;
+    }
+  };
+
   const getProjects = async (): Promise<StoredProject[]> => {
     try {
       const projects = await localforage.getItem(INDEXED_DB_PROJECTS_KEY);
@@ -62,6 +81,7 @@ export const useProjectsApi = () => {
   return {
     saveProject,
     updateProject,
+    removeProject,
     getProjects,
   };
 };

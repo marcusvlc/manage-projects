@@ -19,6 +19,18 @@ export const useProjectsStore = () => {
     projects.value[projectIndex] = updatedProject;
   };
 
+  const removeProject = (projectId: string) => {
+    const projectIndex = projects.value.findIndex(
+      (project) => project.id === projectId,
+    );
+
+    if (projectIndex === -1) {
+      throw new Error("ID não encontrado");
+    }
+
+    projects.value.splice(projectIndex, 1);
+  };
+
   const setProjects = (storedProjects: StoredProject[]) => {
     projects.value = storedProjects;
   };
@@ -44,6 +56,7 @@ export const useProjectsStore = () => {
     toggleProjectFavorited,
     addProject,
     updateProject,
+    removeProject,
     getProjectById,
     setProjects,
   };

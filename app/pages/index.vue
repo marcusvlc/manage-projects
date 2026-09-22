@@ -9,7 +9,7 @@
         :description="`(${projects.length})`"
       >
         <template #actions>
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-4 flex-wrap">
             <ProjectsFilters />
 
             <CommonsButton
@@ -35,18 +35,33 @@
         :projects="filteredProjects"
       />
     </div>
+
+    <CommonsConfirmModal
+      v-model="showDeleteModal"
+      :icon="Trash2"
+      title="Remover projeto"
+      description="Essa ação removerá definitivamente o projeto:"
+      :sub-description="projectToRemove?.name"
+      @confirm="handleConfirmRemove"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { CirclePlus } from "lucide-vue-next";
+import { CirclePlus, Trash2 } from "lucide-vue-next";
 import type { StoredProject } from "~/types/projects/project-types";
 
-const { updateProject } = useProjectsApi();
-const { projects, toggleProjectFavorited } = useProjectsStore();
+const { updateProject, removeProject } = useProjectsApi();
+const {
+  projects,
+  toggleProjectFavorited,
+  removeProject: removeStoredProject,
+} = useProjectsStore();
 const { filteredProjects } = useProjectFilters(projects);
 const router = useRouter();
 const { $toast } = useNuxtApp();
+const showDeleteModal = ref(false);
+const projectToRemove = ref<StoredProject | null>(null);
 
 const goToCreatePage = () => {
   router.push("/create");
@@ -59,7 +74,32 @@ const goToEditPage = (project: StoredProject) => {
   });
 };
 
-const handleRemoveProject = () => {};
+const handleRemoveProject = (project: StoredProject) => {
+  projectToRemove.value = project;
+  showDeleteModal.value = true;
+};
+
+const handleConfirmRemove = async () => {
+  if (!projectToRemove.value) {
+    $toast.error(
+      "Ocorreu um erro ao remover o projeto, tente novamente mais tarde.",
+    );
+    return;
+  }
+
+  const projectId = projectToRemove.value.id;
+
+  try {
+    await removeProject(projectId);
+    removeStoredProject(projectId);
+    projectToRemove.value = null;
+    $toast.success("Projeto removido com sucesso!");
+  } catch {
+    $toast.error(
+      "Ocorreu um erro ao remover o projeto, tente novamente mais tarde.",
+    );
+  }
+};
 
 const handleFavoriteProject = async (project: StoredProject) => {
   try {

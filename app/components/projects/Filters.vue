@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center gap-4">
+  <div class="flex items-center gap-4 flex-wrap">
     <CommonsRadioInput v-model="onlyFavorites" label="Apenas favoritos" />
 
     <div>
