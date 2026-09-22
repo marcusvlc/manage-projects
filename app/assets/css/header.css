@@ -1,5 +1,8 @@
-.header {
+:root {
   --header-height: 80px;
+}
+
+.header {
   --header-shadow-color: #00000040;
   font-family: "Encode Sans Expanded", sans-serif !important;
 }

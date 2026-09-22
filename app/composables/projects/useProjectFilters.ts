@@ -3,6 +3,8 @@ import { projectSorters, sortingOptions } from "~/utils/project-filters";
 import type { ProjectFilter, SortingOption } from "~/types/projects/filters";
 
 export const useProjectFilters = (projects: Ref<StoredProject[]> = ref([])) => {
+  const searchTerm = useState<string>("projects-filter-search-term", () => "");
+
   const onlyFavorites = useState<boolean>(
     "projects-filter-only-favorites",
     () => false,
@@ -22,6 +24,16 @@ export const useProjectFilters = (projects: Ref<StoredProject[]> = ref([])) => {
       );
     }
 
+    if (searchTerm.value) {
+      enabledFilters.push((projectsToFilter) =>
+        projectsToFilter.filter((project) =>
+          project.name
+            .toLocaleLowerCase()
+            .includes(searchTerm.value.toLocaleLowerCase()),
+        ),
+      );
+    }
+
     return enabledFilters;
   });
 
@@ -36,6 +48,7 @@ export const useProjectFilters = (projects: Ref<StoredProject[]> = ref([])) => {
 
   return {
     filteredProjects,
+    searchTerm,
     onlyFavorites,
     sortingBy,
     sortingOptions,
