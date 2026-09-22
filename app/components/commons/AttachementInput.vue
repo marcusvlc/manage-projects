@@ -75,7 +75,7 @@ const emit = defineEmits<{
 
 const fileInput = ref<HTMLInputElement | null>(null);
 const isLoading = ref(false);
-const previewUrl = ref<string | null>(null);
+const previewUrl = ref<string | null>(model.value || null);
 
 const openFileInput = () => {
   fileInput.value?.click();
@@ -134,8 +134,10 @@ watch(isLoading, (newValue) => {
 
 watch(model, (newModel) => {
   if (!newModel) {
-    console.log("REMOVE FILE..");
     removeFile();
+    return;
   }
+
+  previewUrl.value = newModel;
 });
 </script>
