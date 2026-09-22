@@ -38,7 +38,10 @@
     >
       <div class="border-b border-(--gray-border-1) pb-4">
         <h4 class="text-2xl font-bold text-(--text-purple-1)">
-          {{ project.name }}
+          <template v-for="(part, index) in highlightedName" :key="index">
+            <span v-if="part.highlight" class="underline">{{ part.text }}</span>
+            <template v-else>{{ part.text }}</template>
+          </template>
         </h4>
         <p class="mt-1 text-xl">
           <strong class="font-bold text-sm">Cliente:</strong>
@@ -78,6 +81,7 @@ const emit = defineEmits<{
 
 const props = defineProps<{
   project: StoredProject;
+  highlightTerm?: string;
 }>();
 
 const { humanizeDate } = useDateUtils();
@@ -85,6 +89,30 @@ const { humanizeDate } = useDateUtils();
 const project = props.project;
 
 const projectImage = computed(() => props.project.coverImage || coverImage);
+const highlightedName = computed(() => {
+  const highlightTerm = props.highlightTerm?.trim();
+  const projectName = props.project.name;
+
+  if (!highlightTerm) {
+    return [{ text: projectName, highlight: false }];
+  }
+
+  const matchStart = projectName
+    .toLocaleLowerCase()
+    .indexOf(highlightTerm.toLocaleLowerCase());
+
+  if (matchStart === -1) {
+    return [{ text: projectName, highlight: false }];
+  }
+
+  const matchEnd = matchStart + highlightTerm.length;
+
+  return [
+    { text: projectName.slice(0, matchStart), highlight: false },
+    { text: projectName.slice(matchStart, matchEnd), highlight: true },
+    { text: projectName.slice(matchEnd), highlight: false },
+  ];
+});
 const starColor = computed(() =>
   props.project.favorited ? "var(--bg-gold-1)" : "none",
 );

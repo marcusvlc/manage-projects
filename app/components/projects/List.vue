@@ -13,6 +13,7 @@
       v-for="project in projects"
       :key="project.id"
       :project="project"
+      :highlight-term="searchTerm"
       @on-favorite="emit('onFavorite', $event)"
       @on-edit="emit('onEdit', $event)"
       @on-remove="emit('onRemove', $event)"
@@ -28,6 +29,8 @@ const emit = defineEmits<{
   onEdit: [project: StoredProject];
   onRemove: [project: StoredProject];
 }>();
+
+const { searchTerm } = useProjectFilters();
 
 defineProps<{
   projects: StoredProject[];

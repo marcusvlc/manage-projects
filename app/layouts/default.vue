@@ -41,7 +41,9 @@ onMounted(() => {
 
 const handleSearch = (term: string) => {
   if (term.length <= 2) {
-    $toast.info("A busca deve conter pelo menos 3 caracteres.");
+    $toast.info("A busca deve conter pelo menos 3 caracteres.", {
+      position: "bottom-right",
+    });
     return;
   }
 
